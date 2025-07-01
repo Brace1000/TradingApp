@@ -1,0 +1,231 @@
+/* --- Base & Theming --- */
+:root {
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+    /* Light Theme */
+    --bg-primary-light: #f4f7fa;
+    --bg-secondary-light: #ffffff;
+    --text-primary-light: #1a202c;
+    --text-secondary-light: #4a5568;
+    --border-light: #e2e8f0;
+    --accent-light: #3182ce;
+    --price-up-light: #2f855a;
+    --price-down-light: #c53030;
+  
+    /* Dark Theme */
+    --bg-primary-dark: #121212;
+    --bg-secondary-dark: #1a1d21;
+    --text-primary-dark: #e2e8f0;
+    --text-secondary-dark: #a0aec0;
+    --border-dark: #2d3748;
+    --accent-dark: #4299e1;
+    --price-up-dark: #48bb78;
+    --price-down-dark: #f56565;
+  }
+  
+  .light {
+    --bg-primary: var(--bg-primary-light);
+    --bg-secondary: var(--bg-secondary-light);
+    --text-primary: var(--text-primary-light);
+    --text-secondary: var(--text-secondary-light);
+    --border-color: var(--border-light);
+    --accent-color: var(--accent-light);
+    --price-up: var(--price-up-light);
+    --price-down: var(--price-down-light);
+  }
+  
+  .dark {
+    --bg-primary: var(--bg-primary-dark);
+    --bg-secondary: var(--bg-secondary-dark);
+    --text-primary: var(--text-primary-dark);
+    --text-secondary: var(--text-secondary-dark);
+    --border-color: var(--border-dark);
+    --accent-color: var(--accent-dark);
+    --price-up: var(--price-up-dark);
+    --price-down: var(--price-down-dark);
+  }
+  
+  body {
+    margin: 0;
+    font-family: var(--font-main);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.2s ease, color 0.2s ease;
+    overflow-x: hidden;
+  }
+  
+  /* --- App Layout --- */
+  .dashboard {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "header header"
+      "ticker ticker"
+      "sidebar main";
+    height: 100vh;
+    width: 100vw;
+  }
+  
+  .header { grid-area: header; }
+  .ticker-container { grid-area: ticker; }
+  .sidebar { grid-area: sidebar; }
+  .main-content { grid-area: main; }
+  
+  
+  /* --- Reusable Components --- */
+  .card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+  
+  /* --- Header --- */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .logo img { height: 32px; }
+  .logo h1 { font-size: 1.5rem; margin: 0; font-weight: 600; }
+  
+  /* --- Theme Toggle --- */
+  .theme-toggle label {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+  }
+  .theme-toggle input { display: none; }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: var(--bg-primary);
+    border-radius: 34px;
+    transition: 0.4s;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+  input:checked + .slider { background-color: var(--accent-color); }
+  input:checked + .slider:before {
+    transform: translateX(24px);
+    content: '🌙';
+  }
+  .slider:before { content: '☀️'; }
+  
+  
+  /* --- Real-Time Ticker --- */
+  .ticker-container {
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.5rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-wrap {
+    display: inline-block;
+    animation: ticker 40s linear infinite;
+  }
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 1.5rem;
+    font-size: 0.9rem;
+  }
+  .ticker-item span { margin-left: 0.5rem; }
+  .ticker-item .price { font-weight: 600; }
+  .ticker-item .change { font-size: 0.8rem; }
+  
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  
+  /* --- Sidebar (Watchlist) --- */
+  .sidebar {
+    padding: 1.5rem 1rem;
+    border-right: 1px solid var(--border-color);
+    overflow-y: auto;
+    background: var(--bg-secondary);
+  }
+  .sidebar h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0.5rem;
+    color: var(--text-secondary);
+  }
+  .watchlist-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  .watchlist-item:hover { background-color: var(--bg-primary); }
+  .watchlist-item.active {
+    background-color: var(--accent-color);
+    color: white;
+  }
+  .watchlist-item.active .item-symbol,
+  .watchlist-item.active .item-name,
+  .watchlist-item.active .item-price,
+  .watchlist-item.active .item-change {
+    color: white !important;
+  }
+  .item-info { display: flex; flex-direction: column; }
+  .item-symbol { font-weight: 600; font-size: 1rem; }
+  .item-name { font-size: 0.8rem; color: var(--text-secondary); }
+  .item-market { text-align: right; }
+  .item-price { font-weight: 500; }
+  .item-change { font-size: 0.8rem; }
+  
+  /* --- Main Content --- */
+  .main-content {
+    padding: 1.5rem;
+    overflow-y: auto;
+  }
+  .chart-container {
+    height: calc(100vh - 160px); /* Adjust based on header/ticker height */
+    min-height: 400px;
+  }
+  .chart-container .card {
+    height: 100%;
+    padding: 8px;
+  }
+  .loading-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+  }
+  
+  /* --- Price Colors --- */
+  .price-up { color: var(--price-up); }
+  .price-down { color: var(--price-down); }
